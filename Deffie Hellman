@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diffie-Hellman Key Exchange</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; margin: 5px; }
+  </style>
+</head>
+<body>
+
+<h2>Diffie-Hellman Key Exchange</h2>
+
+<label>Enter Alice's Private Key (a):</label>
+<input type="number" id="alicePrivateKey" />
+<button onclick="performDH()">Compute Shared Key</button>
+
+<p><strong>Prime (p):</strong> <span id="p"></span></p>
+<p><strong>Primitive Root (g):</strong> <span id="g"></span></p>
+<p><strong>Bob's Private Key (b):</strong> <span id="bobPrivateKey"></span></p>
+<p><strong>Alice's Public Key (A):</strong> <span id="alicePublic"></span></p>
+<p><strong>Bob's Public Key (B):</strong> <span id="bobPublic"></span></p>
+<p><strong>Shared Secret (computed by Alice):</strong> <span id="aliceShared"></span></p>
+<p><strong>Shared Secret (computed by Bob):</strong> <span id="bobShared"></span></p>
+
+<script>
+  // Small prime and generator for demo
+  const p = 23; // Prime
+  const g = 5;  // Primitive root
+
+  document.getElementById("p").textContent = p;
+  document.getElementById("g").textContent = g;
+
+  function modPow(base, exp, mod) {
+    let result = 1;
+    base = base % mod;
+    while (exp > 0) {
+      if (exp % 2 === 1) result = (result * base) % mod;
+      exp = Math.floor(exp / 2);
+      base = (base * base) % mod;
+    }
+    return result;
+  }
+
+  function performDH() {
+    const a = parseInt(document.getElementById("alicePrivateKey").value);
+    if (isNaN(a)) {
+      alert("Please enter a valid private key for Alice.");
+      return;
+    }
+
+    // Bob generates random private key (b)
+    const b = Math.floor(Math.random() * (p - 2)) + 2;
+
+    // Public keys
+    const A = modPow(g, a, p); // Alice's public key
+    const B = modPow(g, b, p); // Bob's public key
+
+    // Shared secret calculation
+    const aliceShared = modPow(B, a, p); // Alice computes shared key
+    const bobShared = modPow(A, b, p);   // Bob computes shared key
+
+    // Output
+    document.getElementById("bobPrivateKey").textContent = b;
+    document.getElementById("alicePublic").textContent = A;
+    document.getElementById("bobPublic").textContent = B;
+    document.getElementById("aliceShared").textContent = aliceShared;
+    document.getElementById("bobShared").textContent = bobShared;
+  }
+</script>
+
+</body>
+</html>
