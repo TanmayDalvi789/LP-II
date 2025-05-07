@@ -1,0 +1,21 @@
+from Crypto.Cipher import DES
+
+# Padding function (DES needs multiples of 8 bytes)
+def pad(text):
+    while len(text) % 8 != 0:
+        text += ' '
+    return text
+
+# 8-byte key
+key = b'12345678'  # Must be 8 bytes
+des = DES.new(key, DES.MODE_ECB)
+
+# Encrypt
+text = "hello123"
+padded_text = pad(text)
+encrypted = des.encrypt(padded_text.encode())
+print("Encrypted:", encrypted)
+
+# Decrypt
+decrypted = des.decrypt(encrypted).decode().rstrip()
+print("Decrypted:", decrypted)
