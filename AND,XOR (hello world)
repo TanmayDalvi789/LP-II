@@ -1,0 +1,15 @@
+# Define the string
+s = "Hello World"
+
+print("Original String:")
+print(s)
+
+print("\nAND with 127:")
+for c in s:
+    result = ord(c) & 127
+    print(f"{c} -> {result}")
+
+print("\nXOR with 127:")
+for c in s:
+    result = ord(c) ^ 127
+    print(f"{c} -> {result}")
