@@ -1,0 +1,41 @@
+import math
+def encrypt(plaintext,col):
+    row = math.ceil(len(plaintext)/col)
+    index=0
+    matrix = [['' for _ in range(col)] for _ in range(row)]
+    for r in range(row):
+        for c in range(col):
+            if index<len(plaintext):
+                matrix[r][c]=plaintext[index]
+                index+=1
+            else:
+                matrix[r][c]='_'
+    text=''
+    for c in range(col):
+        for r in range(row):
+            text+=matrix[r][c]
+    return text
+
+
+
+def decrypt(ciphertext,col):
+    row = math.ceil(len(ciphertext)/col)
+    matrix = [['' for i in range(col)] for i in range(row)]
+    index=0
+    for c in range(col):
+        for r in range(row):
+                matrix[r][c]=ciphertext[index]
+                index+=1
+    text=""
+    for r in range(row):
+        for c in range(col):
+            if matrix[r][c] != '_':
+                text+=matrix[r][c]
+    return text
+    
+
+plaintext = "iamtheghostoftheuchihamadarauchiha"
+ciphertext = encrypt(plaintext,5)
+print("Cipher Text",ciphertext)
+decrypttext = decrypt(ciphertext,5)
+print("PlainText",decrypttext)
