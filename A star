@@ -1,0 +1,81 @@
+import heapq
+
+# Goal state
+GOAL = [[1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 0]]  # 0 represents the blank tile
+
+# Heuristic: Manhattan Distance
+def manhattan_distance(state):
+    distance = 0
+    for i in range(3):
+        for j in range(3):
+            val = state[i][j]
+            if val != 0:
+                x, y = divmod(val - 1, 3)
+                distance += abs(x - i) + abs(y - j)
+    return distance
+
+# Get neighbors by moving the blank tile
+def get_neighbors(state):
+    neighbors = []
+    x, y = [(ix, iy) for ix, row in enumerate(state)
+            for iy, i in enumerate(row) if i == 0][0]
+
+    moves = [(-1,0), (1,0), (0,-1), (0,1)]  # up, down, left, right
+    for dx, dy in moves:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < 3 and 0 <= ny < 3:
+            new_state = [row[:] for row in state]
+            new_state[x][y], new_state[nx][ny] = new_state[nx][ny], new_state[x][y]
+            neighbors.append(new_state)
+    return neighbors
+
+# Check if two states are equal
+def is_goal(state):
+    return state == GOAL
+
+# Convert list to tuple for hashing
+def state_to_tuple(state):
+    return tuple(tuple(row) for row in state)
+
+# A* Algorithm
+def astar(start):
+    open_list = []
+    heapq.heappush(open_list, (manhattan_distance(start), 0, start, []))
+    visited = set()
+
+    while open_list:
+        f, g, current, path = heapq.heappop(open_list)
+        if is_goal(current):
+            return path + [current]
+        visited.add(state_to_tuple(current))
+        for neighbor in get_neighbors(current):
+            if state_to_tuple(neighbor) not in visited:
+                new_path = path + [current]
+                heapq.heappush(open_list, (
+                    g + 1 + manhattan_distance(neighbor),
+                    g + 1,
+                    neighbor,
+                    new_path
+                ))
+    return None
+
+# Print the state in 3x3 format
+def print_state(state):
+    for row in state:
+        print(row)
+    print()
+
+# Example: Provide an initial state
+initial_state = [[1, 2, 3],
+                 [4, 0, 6],
+                 [7, 5, 8]]
+
+solution = astar(initial_state)
+if solution:
+    print("Solution found in", len(solution)-1, "moves:")
+    for step in solution:
+        print_state(step)
+else:
+    print("No solution found.")
