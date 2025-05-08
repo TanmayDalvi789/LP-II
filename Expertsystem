@@ -1,0 +1,48 @@
+def medical_expert_system():
+    print("Welcome to the Medical Expert System!")
+    print("Answer the following questions with 'yes' or 'no'.")
+
+    fever = input("Do you have a fever? ").lower()
+    cough = input("Do you have a cough? ").lower()
+    sore_throat = input("Do you have a sore throat? ").lower()
+    runny_nose = input("Do you have a runny nose? ").lower()
+    fatigue = input("Are you experiencing fatigue? ").lower()
+    loss_of_taste = input("Have you lost your sense of taste or smell? ").lower()
+    shortness_of_breath = input("Do you have shortness of breath? ").lower()
+
+    print("\nDiagnosis:")
+
+    if fever == "yes" and cough == "yes" and sore_throat == "yes" and fatigue == "yes":
+        if loss_of_taste == "yes" or shortness_of_breath == "yes":
+            print("→ You may have **COVID-19**. Please get tested and isolate yourself.")
+        else:
+            print("→ You may have the **Flu**. Rest and stay hydrated.")
+
+    elif runny_nose == "yes" and sore_throat == "yes" and fever == "no":
+        print("→ You may have a **Common Cold**. It's usually mild.")
+
+    elif fever == "no" and fatigue == "yes" and cough == "no":
+        print("→ You may be experiencing **Fatigue or Stress**. Get rest and eat well.")
+
+    elif fever == "yes" and fatigue == "yes" and cough == "no" and sore_throat == "no":
+        print("→ You may have **Typhoid**. Please consult a doctor.")
+
+    elif fever == "yes" and fatigue == "yes" and shortness_of_breath == "no" and cough == "no":
+        print("→ You may have **Malaria**. A blood test is advised.")
+
+    elif shortness_of_breath == "yes" and cough == "yes" and fever == "no":
+        print("→ You may have **Asthma**. Consider consulting a pulmonologist.")
+
+    elif cough == "yes" and sore_throat == "yes" and runny_nose == "yes" and fever == "no":
+        print("→ You may have an **Allergy or Sinus Infection**. Monitor and take antihistamines if needed.")
+
+    elif fever == "yes" and cough == "yes" and runny_nose == "yes" and sore_throat == "no":
+        print("→ You may have **Bronchitis**. Please see a doctor if symptoms persist.")
+
+    else:
+        print("→ Your symptoms do not match a specific illness. Please consult a doctor for a detailed diagnosis.")
+
+    print("\nDisclaimer: This is a basic expert system and not a substitute for professional medical advice.")
+
+# Run the system
+medical_expert_system()
